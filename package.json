@@ -6,9 +6,9 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "homepage": "https://github.com/nuhmanpk",
-
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "preinstall": "node check-os.js"
   },
   "repository": {
     "type": "git",
@@ -23,8 +23,11 @@
   "author": "Nuhman PK",
   "license": "MIT",
   "devDependencies": {
-    "systeminformation": "^5.21.24",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.1",
+    "systeminformation": "^5.21.24"
   }
 }

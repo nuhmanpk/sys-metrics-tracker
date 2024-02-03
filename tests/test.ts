@@ -2,14 +2,34 @@
 import {
     getSystemInformation,
     getSystemUUID,
-    getBIOS
+    getBIOS,
+    getCpuSpeed,
+    getCurrentLoad,
+    getFullLoad,
+    getProcesses,
+    getMysqlServices,
+    getCpuInformation
   } from '../src/general';
+
+  import {
+    calculateCurrentCpuUsage,
+    calculateCurrentMemoryUsage
+  } from '../src/utils'
   
   async function runTests() {
     try {
-      // Test System Information
-      const data = await getBIOS();
-      console.log('System Information:', data);
+      // stats
+
+      const data = setInterval(async ()=>{
+        let res = await calculateCurrentCpuUsage()
+        console.log(res)
+      },3000);
+
+      // general
+
+      // let data = await getCpuInformation()
+      // console.log(data)
+      
     } catch (error) {
       console.error('Error running tests:', error);
     }
