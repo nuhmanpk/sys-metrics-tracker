@@ -12,8 +12,10 @@ import {
   } from '../src/general';
 
   import {
-    calculateCurrentCpuUsage,
-    calculateCurrentMemoryUsage
+    calculateCurrentCpuLoad,
+    calculateCurrentMemoryLoad,
+    calculateCpuCoreLoads,
+    calculateNetworkRates,
   } from '../src/utils'
   
   async function runTests() {
@@ -21,8 +23,10 @@ import {
       // stats
 
       const data = setInterval(async ()=>{
-        let res = await calculateCurrentCpuUsage()
+        let res = await calculateNetworkRates()
         console.log(res)
+        // let res1 = await calculateCurrentCpuLoad()
+        // console.log(res1)
       },3000);
 
       // general

@@ -107,3 +107,7 @@ export async function getKafkaServices(): Promise<Systeminformation.ServicesData
 export async function getAllServices(): Promise<Systeminformation.ServicesData[]> {
     return await si.services('*');
 }
+
+export async function getNetworkStats(): Promise<Systeminformation.NetworkStatsData[]>{
+    return await si.networkStats()
+}

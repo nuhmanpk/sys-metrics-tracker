@@ -1,58 +1,68 @@
-import { getCpuInformation, getFullLoad, getMemoryInformation, getCurrentLoad } from './general';
 import { Systeminformation } from 'systeminformation';
-import { Chart } from 'chart.js';
+import { getMemoryInformation, getCurrentLoad, getNetworkStats } from './general';
 
-export async function calculateCurrentCpuUsage(): Promise<number> {
+export async function calculateCurrentCpuLoad(): Promise<{ avg?: number, load: number; }> {
+  const loadValues: { avg?: number, load: number; } = {
+    load: 0,
+    avg: 0,
+  };
+
   const currentLoadData = await getCurrentLoad();
-  return currentLoadData.currentLoadSystem;
+  loadValues.avg = parseFloat(currentLoadData.avgLoad.toFixed(2));
+  loadValues.load = parseFloat(currentLoadData.currentLoadSystem.toFixed(2));
+
+  return loadValues;
 }
 
-
-export async function calculateCurrentMemoryUsage(): Promise<number> {
+export async function calculateCurrentMemoryLoad(): Promise<number> {
   const memoryData = await getMemoryInformation();
-
   const currentMemoryData = await getMemoryInformation();
-  return (currentMemoryData.used / memoryData.total) * 100;
+  const memoryUsagePercentage = parseFloat((currentMemoryData.used / memoryData.total * 100).toFixed(2));
 
+  return memoryUsagePercentage;
 }
 
-// export function plotRealTimeGraphWithChartJS(values: number[], title: string, interval: number) {
-//   const ctx = document.getElementById('graph') as HTMLCanvasElement;
-//   const chart = new Chart(ctx, {
-//     type: 'line',
-//     data: {
-//       labels: [], // You can customize this based on your use case
-//       datasets: [{
-//         label: title,
-//         data: values,
-//         backgroundColor: 'rgba(75, 192, 192, 0.2)',
-//         borderColor: 'rgba(75, 192, 192, 1)',
-//         borderWidth: 1,
-//         fill: false,
-//       }],
-//     },
-//     options: {
-//       scales: {
-//         x: {
-//           type: 'linear',
-//           position: 'bottom',
-//         },
-//         y: {
-//           max: 100, // Customize based on your use case
-//           min: 0,
-//           stepSize: 10,
-//         },
-//       },
-//     },
-//   });
+export async function calculateTotalCoreLoad(): Promise<{ total: number, cores: number[]; }> {
+  const currentLoadData = await getCurrentLoad();
 
-//   setInterval(async () => {
-//     const currentLoadData = await getCurrentLoad();
-//     const totalLoad: number = await getFullLoad();
-//     const currentLoadPercentage = (currentLoadData.currentLoad / totalLoad) * 100;
+  if (currentLoadData.cpus) {
+    const totalCoreLoad = parseFloat(currentLoadData.currentLoad.toFixed(2));
+    const coreLoads = currentLoadData.cpus.map(core => parseFloat(core.load.toFixed(2)));
 
-//     chart.data.labels.push(''); // Add an empty label for each new data point
-//     chart.data.datasets[0].data.push(currentLoadPercentage);
-//     chart.update();
-//   }, interval);
-// }
+    return { total: totalCoreLoad, cores: coreLoads };
+  }
+
+  return { total: 0, cores: [] };
+}
+
+export async function calculateCpuCoreLoads(): Promise<{ total: number, totalCores: number, cores: { [index: number]: number; }; }> {
+  const totalCoreLoadData = await calculateTotalCoreLoad();
+  const coreLoads: { [index: number]: number; } = {};
+
+  totalCoreLoadData.cores.forEach((coreLoad, index) => {
+    coreLoads[index] = coreLoad;
+  });
+
+  return { total: totalCoreLoadData.total, totalCores: totalCoreLoadData.cores.length, cores: coreLoads };
+}
+
+export async function calculateNetworkRates(): Promise<{ upload: number; download: number; }> {
+  const currentStats = await getNetworkStats();
+
+  if (currentStats[0]) {
+    const timeElapsed = 3; // Assuming the stats are collected at 3-second intervals
+
+    const uploadRate = (
+      (currentStats[currentStats.length - 1].tx_sec || 0) / timeElapsed
+    ) * 8 / 1e6;
+
+    const downloadRate = (
+      (currentStats[currentStats.length - 1].rx_sec || 0) / timeElapsed
+    ) * 8 / 1e6;
+
+    return { upload: +uploadRate.toFixed(2), download: +downloadRate.toFixed(2) };
+  }
+
+
+  return { upload: 0, download: 0 };
+}
