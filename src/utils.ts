@@ -1,4 +1,3 @@
-import { Systeminformation } from 'systeminformation';
 import { getMemoryInformation, getCurrentLoad, getNetworkStats } from './general';
 
 export async function calculateCurrentCpuLoad(): Promise<{ avg?: number, load: number; }> {
