@@ -24,6 +24,3 @@ System Metrics Tracker is a simple tool for visualizing real-time system metrics
     ```bash
     npm run build
     ```
-
-## Usage
-Open the dist/index.html file in your web browser to view real-time graphs for various system metrics. Each graph updates at a 3-second interval.
