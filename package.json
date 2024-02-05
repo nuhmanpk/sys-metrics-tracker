@@ -1,6 +1,6 @@
 {
   "name": "sys-metrics-tracker",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Lightweight Node.js package designed to effortlessly track and provide real-time system metrics. This versatile wrapper utilizes the systeminformation library to fetch essential data such as CPU usage, memory statistics, and more",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -25,6 +25,7 @@
   "author": "Nuhman PK",
   "license": "MIT",
   "devDependencies": {
+    "ts-node": "^10.9.2",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
   },

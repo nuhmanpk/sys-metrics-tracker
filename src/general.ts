@@ -13,11 +13,11 @@ export async function getBIOS(): Promise<Systeminformation.BiosData> {
 }
 
 export async function getCpuInformation(): Promise<Systeminformation.CpuData> {
-    return await si.cpu()
+    return await si.cpu();
 }
 
 export async function getCpuCache(): Promise<Systeminformation.CpuCacheData> {
-    return await si.cpuCache()
+    return await si.cpuCache();
 }
 
 export async function getMemoryInformation(): Promise<Systeminformation.MemData> {
@@ -33,35 +33,35 @@ export async function getDiskInformation(): Promise<Systeminformation.BlockDevic
 }
 
 export async function getCpuSpeed(): Promise<Systeminformation.CpuCurrentSpeedData> {
-    return await si.cpuCurrentSpeed()
+    return await si.cpuCurrentSpeed();
 }
 
 export async function getCpuTemperature(): Promise<Systeminformation.CpuTemperatureData> {
-    return await si.cpuTemperature()
+    return await si.cpuTemperature();
 }
 
 export async function getCurrentLoad(): Promise<Systeminformation.CurrentLoadData> {
-    return await si.currentLoad()
+    return await si.currentLoad();
 }
 
 export async function getFullLoad(): Promise<number> {
-    return await si.fullLoad()
+    return await si.fullLoad();
 }
 
 export async function getProcesses(): Promise<Systeminformation.ProcessesData> {
-    return await si.processes()
+    return await si.processes();
 }
 
 export async function getMysqlServices(): Promise<Systeminformation.ServicesData[]> {
-    return await si.services('mysql')
+    return await si.services('mysql');
 }
 
 export async function getPostgresServices(): Promise<Systeminformation.ServicesData[]> {
-    return await si.services('postgresql')
+    return await si.services('postgresql');
 }
 
 export async function getApacheServices(): Promise<Systeminformation.ServicesData[]> {
-    return await si.services('apache')
+    return await si.services('apache');
 }
 
 export async function getNginxServices(): Promise<Systeminformation.ServicesData[]> {
@@ -108,6 +108,22 @@ export async function getAllServices(): Promise<Systeminformation.ServicesData[]
     return await si.services('*');
 }
 
-export async function getNetworkStats(): Promise<Systeminformation.NetworkStatsData[]>{
-    return await si.networkStats()
+export async function getNodeServices(): Promise<Systeminformation.ServicesData[]> {
+    return await si.services('node');
+}
+
+export async function getPythonServices(): Promise<Systeminformation.ServicesData[]> {
+    return await si.services('python');
+}
+
+export async function getJavaServices(): Promise<Systeminformation.ServicesData[]> {
+    return await si.services('java');
+}
+
+export async function getServices(service: string): Promise<Systeminformation.ServicesData[]> {
+    return await si.services(service);
+}
+
+export async function getNetworkStats(): Promise<Systeminformation.NetworkStatsData[]> {
+    return await si.networkStats();
 }
